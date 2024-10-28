@@ -1,13 +1,13 @@
 package com.uni.thesissystem.service;
 
-import com.uni.thesissystem.model.Student;
+import com.uni.thesissystem.dto.StudentDTO;
 
 import java.util.List;
 
 public interface StudentService {
-    List<Student> getAllStudents();
-    Student getStudentById(Long id);
-    Student createStudent(Student student);
-    Student updateStudent(Long id, Student student);
+    StudentDTO saveStudent(StudentDTO studentDTO);
+    StudentDTO getStudentById(Long id);
+    List<StudentDTO> getAllStudents();
+    StudentDTO updateStudent(Long id, StudentDTO studentDTO);
     void deleteStudent(Long id);
 }

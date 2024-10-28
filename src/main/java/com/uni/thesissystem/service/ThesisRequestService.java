@@ -1,13 +1,13 @@
 package com.uni.thesissystem.service;
 
-import com.uni.thesissystem.model.ThesisRequest;
+import com.uni.thesissystem.dto.ThesisRequestDTO;
 
 import java.util.List;
 
 public interface ThesisRequestService {
-    List<ThesisRequest> getAllThesisRequests();
-    ThesisRequest getThesisRequestById(Long id);
-    ThesisRequest createThesisRequest(ThesisRequest thesisRequest);
-    ThesisRequest updateThesisRequest(Long id, ThesisRequest thesisRequest);
+    ThesisRequestDTO saveThesisRequest(ThesisRequestDTO thesisRequestDTO);
+    ThesisRequestDTO getThesisRequestById(Long id);
+    List<ThesisRequestDTO> getAllThesisRequests();
+    ThesisRequestDTO updateThesisRequest(Long id, ThesisRequestDTO thesisRequestDTO);
     void deleteThesisRequest(Long id);
 }

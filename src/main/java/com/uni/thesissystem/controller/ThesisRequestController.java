@@ -1,6 +1,6 @@
 package com.uni.thesissystem.controller;
 
-import com.uni.thesissystem.model.ThesisRequest;
+import com.uni.thesissystem.dto.ThesisRequestDTO;
 import com.uni.thesissystem.service.ThesisRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,24 +15,28 @@ public class ThesisRequestController {
     @Autowired
     private ThesisRequestService thesisRequestService;
 
-    @GetMapping
-    public ResponseEntity<List<ThesisRequest>> getAllThesisRequests() {
-        return ResponseEntity.ok(thesisRequestService.getAllThesisRequests());
+    @PostMapping
+    public ResponseEntity<ThesisRequestDTO> createThesisRequest(@RequestBody ThesisRequestDTO thesisRequestDTO) {
+        ThesisRequestDTO savedRequest = thesisRequestService.saveThesisRequest(thesisRequestDTO);
+        return ResponseEntity.ok(savedRequest);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ThesisRequest> getThesisRequestById(@PathVariable Long id) {
-        return ResponseEntity.ok(thesisRequestService.getThesisRequestById(id));
+    public ResponseEntity<ThesisRequestDTO> getThesisRequestById(@PathVariable Long id) {
+        ThesisRequestDTO thesisRequestDTO = thesisRequestService.getThesisRequestById(id);
+        return ResponseEntity.ok(thesisRequestDTO);
     }
 
-    @PostMapping
-    public ResponseEntity<ThesisRequest> createThesisRequest(@RequestBody ThesisRequest thesisRequest) {
-        return ResponseEntity.ok(thesisRequestService.createThesisRequest(thesisRequest));
+    @GetMapping
+    public ResponseEntity<List<ThesisRequestDTO>> getAllThesisRequests() {
+        List<ThesisRequestDTO> thesisRequests = thesisRequestService.getAllThesisRequests();
+        return ResponseEntity.ok(thesisRequests);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ThesisRequest> updateThesisRequest(@PathVariable Long id, @RequestBody ThesisRequest thesisRequest) {
-        return ResponseEntity.ok(thesisRequestService.updateThesisRequest(id, thesisRequest));
+    public ResponseEntity<ThesisRequestDTO> updateThesisRequest(@PathVariable Long id, @RequestBody ThesisRequestDTO thesisRequestDTO) {
+        ThesisRequestDTO updatedRequest = thesisRequestService.updateThesisRequest(id, thesisRequestDTO);
+        return ResponseEntity.ok(updatedRequest);
     }
 
     @DeleteMapping("/{id}")

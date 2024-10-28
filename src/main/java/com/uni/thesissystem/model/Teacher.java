@@ -2,7 +2,8 @@ package com.uni.thesissystem.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,12 @@ public class Teacher extends IdGenerator{
 
     private String name;
 
-    @ManyToMany(mappedBy = "teachers")
+    @OneToMany(mappedBy = "supervisor", fetch = FetchType.EAGER)
+    @JsonIgnore
+    private List<ThesisRequest> thesisRequests;
+
+
+    @OneToMany(mappedBy = "teachers")
     @JsonIgnore
     private List<ThesisDefense> defenses;
 

@@ -1,6 +1,7 @@
 package com.uni.thesissystem.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -15,18 +16,17 @@ import java.util.List;
 @AllArgsConstructor
 public class ThesisRequest extends IdGenerator{
 
-    private String topic;
-    private String goal;
+    private String title;
+    private String description;
     private List<String> technologies;
     private boolean isApproved;
 
-    @OneToOne
-    @JoinColumn(name = "student_id")
+    @ManyToOne
+    @JoinColumn(name = "student_id", nullable = false)
     private Student student;
 
-    @OneToOne
-    @JoinColumn(name = "teacher_id")
-    private Teacher teacher;
-
+    @ManyToOne
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher supervisor;
 
 }

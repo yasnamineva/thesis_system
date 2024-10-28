@@ -7,7 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -15,7 +15,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class Recension extends IdGenerator{
 
-    private Date submitionDate;
+    private LocalDate submissionDate;
     private boolean conclusion;
 
     @OneToOne

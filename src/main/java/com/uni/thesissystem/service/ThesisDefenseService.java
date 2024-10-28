@@ -1,13 +1,12 @@
 package com.uni.thesissystem.service;
 
-import com.uni.thesissystem.model.ThesisDefense;
-
+import com.uni.thesissystem.dto.ThesisDefenseDTO;
 import java.util.List;
 
 public interface ThesisDefenseService {
-    List<ThesisDefense> getAllThesisDefenses();
-    ThesisDefense getThesisDefenseById(Long id);
-    ThesisDefense createThesisDefense(ThesisDefense thesisDefense);
-    ThesisDefense updateThesisDefense(Long id, ThesisDefense thesisDefense);
+    ThesisDefenseDTO saveThesisDefense(ThesisDefenseDTO thesisDefenseDTO);
+    ThesisDefenseDTO getThesisDefenseById(Long id);
+    List<ThesisDefenseDTO> getAllThesisDefenses();
+    ThesisDefenseDTO updateThesisDefense(Long id, ThesisDefenseDTO thesisDefenseDTO);
     void deleteThesisDefense(Long id);
 }
