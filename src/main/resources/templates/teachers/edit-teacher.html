@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Teacher</title>
+</head>
+<body>
+<h1>Edit Teacher</h1>
+<form th:action="@{/teachers/{id}/edit(id=${teacher.id})}" method="post" th:object="${teacher}">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" required/>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br/>
+    <button type="submit">Update</button>
+</form>
+<a href="@{/teachers}">Back to Teachers List</a>
+</body>
+</html>

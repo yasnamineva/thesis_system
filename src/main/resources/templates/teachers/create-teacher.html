@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Teacher</title>
+</head>
+<body>
+<h1>Create Teacher</h1>
+<form th:action="@{/teachers/create}" method="post" th:object="${teacher}">
+    <label>Name:</label>
+    <input type="text" th:field="*{name}" required/>
+    <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+    <br/>
+    <button type="submit">Create</button>
+</form>
+<a href="@{/teachers}">Back to Teachers List</a>
+</body>
+</html>

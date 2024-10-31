@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Teachers List</title>
+</head>
+<body>
+<h1>Teachers List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="teacher : ${teachers}">
+        <td th:text="${teacher.id}"></td>
+        <td th:text="${teacher.name}"></td>
+        <td>
+            <a th:href="@{/teachers/{id}(id=${teacher.id})}">View</a>
+            <a th:href="@{/teachers/{id}/edit(id=${teacher.id})}">Edit</a>
+            <form th:action="@{/teachers/{id}/delete(id=${teacher.id})}" method="post" style="display:inline;">
+                <input type="hidden" name="_method" value="post"/> <!-- Hidden field to specify DELETE method -->
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<a th:href="@{/teachers/create}">Create New Teacher</a>
+</body>
+</html>

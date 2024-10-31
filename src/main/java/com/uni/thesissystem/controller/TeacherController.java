@@ -3,45 +3,72 @@ package com.uni.thesissystem.controller;
 import com.uni.thesissystem.dto.TeacherDTO;
 import com.uni.thesissystem.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/teachers")
 public class TeacherController {
 
     @Autowired
     private TeacherService teacherService;
 
-    @PostMapping
-    public ResponseEntity<TeacherDTO> createTeacher(@RequestBody TeacherDTO teacherDTO) {
-        TeacherDTO savedTeacher = teacherService.saveTeacher(teacherDTO);
-        return ResponseEntity.ok(savedTeacher);
+    @GetMapping("/create")
+    public String showCreateTeacherForm(Model model) {
+        model.addAttribute("teacher", new TeacherDTO());
+        return "teachers/create-teacher";
+    }
+
+    @PostMapping("/create")
+    public String createTeacher(@Valid @ModelAttribute("teacher") TeacherDTO teacherDTO,
+                                BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "teachers/create-teacher";
+        }
+        teacherService.saveTeacher(teacherDTO);
+        return "redirect:/teachers";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TeacherDTO> getTeacherById(@PathVariable Long id) {
+    public String getTeacherById(@PathVariable Long id, Model model) {
         TeacherDTO teacherDTO = teacherService.getTeacherById(id);
-        return ResponseEntity.ok(teacherDTO);
+        model.addAttribute("teacher", teacherDTO);
+        return "teachers/view-teacher";
     }
 
     @GetMapping
-    public ResponseEntity<List<TeacherDTO>> getAllTeachers() {
+    public String getAllTeachers(Model model) {
         List<TeacherDTO> teachers = teacherService.getAllTeachers();
-        return ResponseEntity.ok(teachers);
+        model.addAttribute("teachers", teachers);
+        return "teachers/list-teachers";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<TeacherDTO> updateTeacher(@PathVariable Long id, @RequestBody TeacherDTO teacherDTO) {
-        TeacherDTO updatedTeacher = teacherService.updateTeacher(id, teacherDTO);
-        return ResponseEntity.ok(updatedTeacher);
+    @GetMapping("/{id}/edit")
+    public String showEditTeacherForm(@PathVariable Long id, Model model) {
+        TeacherDTO teacherDTO = teacherService.getTeacherById(id);
+        model.addAttribute("teacher", teacherDTO);
+        return "teachers/edit-teacher";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTeacher(@PathVariable Long id) {
+    @PostMapping("/{id}/edit")
+    public String updateTeacher(@PathVariable Long id,
+                                @Valid @ModelAttribute("teacher") TeacherDTO teacherDTO,
+                                BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "teachers/edit-teacher";
+        }
+        teacherService.updateTeacher(id, teacherDTO);
+        return "redirect:/teachers";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteTeacher(@PathVariable Long id) {
         teacherService.deleteTeacher(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/teachers";
     }
 }

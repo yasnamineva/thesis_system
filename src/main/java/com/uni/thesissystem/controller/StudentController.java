@@ -28,17 +28,17 @@ public class StudentController {
     public String createStudent(@Valid @ModelAttribute("student") StudentDTO studentDTO,
                                 BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
-            return "students/create-student"; // Return to the creation form with errors
+            return "students/create-student";
         }
         studentService.saveStudent(studentDTO);
-        return "redirect:/students"; // Redirect after successful creation
+        return "redirect:/students";
     }
 
     @GetMapping("/{id}")
     public String getStudentById(@PathVariable Long id, Model model) {
         StudentDTO studentDTO = studentService.getStudentById(id);
         model.addAttribute("student", studentDTO);
-        return "students/view-student"; // Return the view for the student
+        return "students/view-student";
     }
 
     @GetMapping
