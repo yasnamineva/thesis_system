@@ -45,14 +45,14 @@ public class StudentController {
     public String getAllStudents(Model model) {
         List<StudentDTO> students = studentService.getAllStudents();
         model.addAttribute("students", students);
-        return "students/list-students"; // Return the list of students
+        return "students/list-students";
     }
 
     @GetMapping("/{id}/edit")
     public String showEditStudentForm(@PathVariable Long id, Model model) {
         StudentDTO studentDTO = studentService.getStudentById(id);
         model.addAttribute("student", studentDTO);
-        return "students/edit-student"; // Return the edit form
+        return "students/edit-student";
     }
 
     @PostMapping("/{id}/edit")

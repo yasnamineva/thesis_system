@@ -4,6 +4,7 @@ import com.uni.thesissystem.dto.StudentDTO;
 import com.uni.thesissystem.model.Student;
 import com.uni.thesissystem.repository.StudentRepository;
 import com.uni.thesissystem.service.StudentService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO getStudentById(Long id) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         return modelMapper.map(student, StudentDTO.class);
     }
 
@@ -44,7 +45,7 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public StudentDTO updateStudent(Long id, StudentDTO studentDTO) {
         Student student = studentRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         student.setName(studentDTO.getName());  // Update fields as needed
         Student updatedStudent = studentRepository.save(student);
         return modelMapper.map(updatedStudent, StudentDTO.class);

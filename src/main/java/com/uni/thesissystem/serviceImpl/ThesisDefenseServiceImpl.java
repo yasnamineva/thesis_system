@@ -8,6 +8,7 @@ import com.uni.thesissystem.repository.TeacherRepository;
 import com.uni.thesissystem.repository.ThesisDefenseRepository;
 import com.uni.thesissystem.repository.ThesisRepository;
 import com.uni.thesissystem.service.ThesisDefenseService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +38,7 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
         thesisDefense.setDate(thesisDefenseDTO.getDate());
 
         Thesis thesis = thesisRepository.findById(thesisDefenseDTO.getThesisId())
-                .orElseThrow(() -> new RuntimeException("Thesis not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
         thesisDefense.setThesis(thesis);
 
         List<Teacher> teachers = teacherRepository.findAllById(thesisDefenseDTO.getTeacherIds());
@@ -50,7 +51,7 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
     @Override
     public ThesisDefenseDTO getThesisDefenseById(Long id) {
         ThesisDefense thesisDefense = thesisDefenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Thesis Defense not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis Defense not found"));
         return modelMapper.map(thesisDefense, ThesisDefenseDTO.class);
     }
 
@@ -64,13 +65,13 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
     @Override
     public ThesisDefenseDTO updateThesisDefense(Long id, ThesisDefenseDTO thesisDefenseDTO) {
         ThesisDefense thesisDefense = thesisDefenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Thesis Defense not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis Defense not found"));
 
         thesisDefense.setMarks(thesisDefenseDTO.getMarks());
         thesisDefense.setDate(thesisDefenseDTO.getDate());
 
         Thesis thesis = thesisRepository.findById(thesisDefenseDTO.getThesisId())
-                .orElseThrow(() -> new RuntimeException("Thesis not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
         thesisDefense.setThesis(thesis);
 
         List<Teacher> teachers = teacherRepository.findAllById(thesisDefenseDTO.getTeacherIds());

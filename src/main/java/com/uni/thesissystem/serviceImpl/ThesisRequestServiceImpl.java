@@ -9,6 +9,7 @@ import com.uni.thesissystem.repository.StudentRepository;
 import com.uni.thesissystem.repository.TeacherRepository;
 import com.uni.thesissystem.repository.ThesisRequestRepository;
 import com.uni.thesissystem.service.ThesisRequestService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,11 +42,11 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
 
         // Set the associated student and teacher
         Student student = studentRepository.findById(thesisRequestDTO.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         thesisRequest.setStudent(student);
 
         Teacher supervisor = teacherRepository.findById(thesisRequestDTO.getSupervisorId())
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
         thesisRequest.setSupervisor(supervisor);
 
         ThesisRequest savedRequest = thesisRequestRepository.save(thesisRequest);
@@ -55,7 +56,7 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
     @Override
     public ThesisRequestDTO getThesisRequestById(Long id) {
         ThesisRequest thesisRequest = thesisRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ThesisRequest not found"));
+                .orElseThrow(() -> new EntityNotFoundException("ThesisRequest not found"));
         return modelMapper.map(thesisRequest, ThesisRequestDTO.class);
     }
 
@@ -69,7 +70,7 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
     @Override
     public ThesisRequestDTO updateThesisRequest(Long id, ThesisRequestDTO thesisRequestDTO) {
         ThesisRequest thesisRequest = thesisRequestRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("ThesisRequest not found"));
+                .orElseThrow(() -> new EntityNotFoundException("ThesisRequest not found"));
 
         Long oldStudentId = thesisRequest.getStudent().getId();
         Long newStudentId = thesisRequestDTO.getStudentId();
@@ -86,11 +87,11 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
         thesisRequest.setDescription(thesisRequestDTO.getDescription());
 
         Student student = studentRepository.findById(thesisRequestDTO.getStudentId())
-                .orElseThrow(() -> new RuntimeException("Student not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         thesisRequest.setStudent(student);
 
         Teacher supervisor = teacherRepository.findById(thesisRequestDTO.getSupervisorId())
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
         thesisRequest.setSupervisor(supervisor);
 
         ThesisRequest updatedRequest = thesisRequestRepository.save(thesisRequest);

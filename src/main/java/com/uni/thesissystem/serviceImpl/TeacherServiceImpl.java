@@ -1,11 +1,14 @@
 package com.uni.thesissystem.serviceImpl;
 
 import com.uni.thesissystem.dto.TeacherDTO;
+import com.uni.thesissystem.exceptions.EntityDeletionException;
 import com.uni.thesissystem.model.Teacher;
 import com.uni.thesissystem.repository.TeacherRepository;
 import com.uni.thesissystem.service.TeacherService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,7 +33,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherDTO getTeacherById(Long id) {
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
         return modelMapper.map(teacher, TeacherDTO.class);
     }
 
@@ -44,7 +47,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public TeacherDTO updateTeacher(Long id, TeacherDTO teacherDTO) {
         Teacher teacher = teacherRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Teacher not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
         teacher.setName(teacherDTO.getName());  // Update fields as necessary
         Teacher updatedTeacher = teacherRepository.save(teacher);
         return modelMapper.map(updatedTeacher, TeacherDTO.class);
@@ -52,6 +55,9 @@ public class TeacherServiceImpl implements TeacherService {
 
     @Override
     public void deleteTeacher(Long id) {
-        teacherRepository.deleteById(id);
-    }
+        try {
+            teacherRepository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityDeletionException("Teacher", id);
+        }    }
 }

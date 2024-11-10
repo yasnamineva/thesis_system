@@ -3,45 +3,72 @@ package com.uni.thesissystem.controller;
 import com.uni.thesissystem.dto.ThesisRequestDTO;
 import com.uni.thesissystem.service.ThesisRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@RestController
+@Controller
 @RequestMapping("/thesis-requests")
 public class ThesisRequestController {
 
     @Autowired
     private ThesisRequestService thesisRequestService;
 
-    @PostMapping
-    public ResponseEntity<ThesisRequestDTO> createThesisRequest(@RequestBody ThesisRequestDTO thesisRequestDTO) {
-        ThesisRequestDTO savedRequest = thesisRequestService.saveThesisRequest(thesisRequestDTO);
-        return ResponseEntity.ok(savedRequest);
+    @GetMapping("/create")
+    public String showCreateThesisRequestForm(Model model) {
+        model.addAttribute("thesisRequest", new ThesisRequestDTO());
+        return "thesis-requests/create-thesis-request";
+    }
+
+    @PostMapping("/create")
+    public String createThesisRequest(@Valid @ModelAttribute("thesisRequest") ThesisRequestDTO thesisRequestDTO,
+                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "thesis-requests/create-thesis-request";
+        }
+        thesisRequestService.saveThesisRequest(thesisRequestDTO);
+        return "redirect:/thesis-requests";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ThesisRequestDTO> getThesisRequestById(@PathVariable Long id) {
+    public String getThesisRequestById(@PathVariable Long id, Model model) {
         ThesisRequestDTO thesisRequestDTO = thesisRequestService.getThesisRequestById(id);
-        return ResponseEntity.ok(thesisRequestDTO);
+        model.addAttribute("thesisRequest", thesisRequestDTO);
+        return "thesis-requests/view-thesis-request";
     }
 
     @GetMapping
-    public ResponseEntity<List<ThesisRequestDTO>> getAllThesisRequests() {
+    public String getAllThesisRequests(Model model) {
         List<ThesisRequestDTO> thesisRequests = thesisRequestService.getAllThesisRequests();
-        return ResponseEntity.ok(thesisRequests);
+        model.addAttribute("thesisRequests", thesisRequests);
+        return "thesis-requests/list-thesis-requests";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ThesisRequestDTO> updateThesisRequest(@PathVariable Long id, @RequestBody ThesisRequestDTO thesisRequestDTO) {
-        ThesisRequestDTO updatedRequest = thesisRequestService.updateThesisRequest(id, thesisRequestDTO);
-        return ResponseEntity.ok(updatedRequest);
+    @GetMapping("/{id}/edit")
+    public String showEditThesisRequestForm(@PathVariable Long id, Model model) {
+        ThesisRequestDTO thesisRequestDTO = thesisRequestService.getThesisRequestById(id);
+        model.addAttribute("thesisRequest", thesisRequestDTO);
+        return "thesis-requests/edit-thesis-request";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThesisRequest(@PathVariable Long id) {
+    @PostMapping("/{id}/edit")
+    public String updateThesisRequest(@PathVariable Long id,
+                                      @Valid @ModelAttribute("thesisRequest") ThesisRequestDTO thesisRequestDTO,
+                                      BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "thesis-requests/edit-thesis-request";
+        }
+        thesisRequestService.updateThesisRequest(id, thesisRequestDTO);
+        return "redirect:/thesis-requests";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteThesisRequest(@PathVariable Long id) {
         thesisRequestService.deleteThesisRequest(id);
-        return ResponseEntity.noContent().build();
+        return "redirect:/thesis-requests";
     }
 }

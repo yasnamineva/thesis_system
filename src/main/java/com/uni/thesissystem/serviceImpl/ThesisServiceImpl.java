@@ -6,6 +6,7 @@ import com.uni.thesissystem.model.ThesisRequest;
 import com.uni.thesissystem.repository.ThesisRepository;
 import com.uni.thesissystem.repository.ThesisRequestRepository;
 import com.uni.thesissystem.service.ThesisService;
+import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,7 +31,7 @@ public class ThesisServiceImpl implements ThesisService {
         Thesis thesis = modelMapper.map(thesisDTO, Thesis.class);
 
         ThesisRequest request = thesisRequestRepository.findById(thesisDTO.getRequestId())
-                .orElseThrow(() -> new RuntimeException("Thesis request not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis request not found"));
         thesis.setRequest(request);
 
         thesis.setSubmissionDate(thesisDTO.getSubmissionDate());
@@ -43,7 +44,7 @@ public class ThesisServiceImpl implements ThesisService {
     @Override
     public ThesisDTO getThesisById(Long id) {
         Thesis thesis = thesisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Thesis not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
         return modelMapper.map(thesis, ThesisDTO.class);
     }
 
@@ -57,13 +58,13 @@ public class ThesisServiceImpl implements ThesisService {
     @Override
     public ThesisDTO updateThesis(Long id, ThesisDTO thesisDTO) {
         Thesis thesis = thesisRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Thesis not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
 
         thesis.setSubmissionDate(thesisDTO.getSubmissionDate());
         thesis.setTitle(thesisDTO.getTitle());
 
         ThesisRequest request = thesisRequestRepository.findById(thesisDTO.getRequestId())
-                .orElseThrow(() -> new RuntimeException("Thesis request not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Thesis request not found"));
         thesis.setRequest(request);
 
         Thesis updatedThesis = thesisRepository.save(thesis);

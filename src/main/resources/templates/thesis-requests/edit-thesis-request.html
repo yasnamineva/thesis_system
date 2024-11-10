@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Thesis Request</title>
+</head>
+<body>
+<h1>Edit Thesis Request</h1>
+<form th:action="@{/thesis-requests/{id}/edit(id=${thesisRequest.id})}" method="post" th:object="${thesisRequest}">
+  <label>Title:</label>
+  <input type="text" th:field="*{title}" required/>
+  <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+  <br/>
+  <label>Description:</label>
+  <textarea th:field="*{description}" required></textarea>
+  <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
+  <br/>
+  <label>Student ID:</label>
+  <input type="number" th:field="*{studentId}" required/>
+  <span th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
+  <br/>
+  <label>Supervisor ID:</label>
+  <input type="number" th:field="*{supervisorId}" required/>
+  <span th:if="${#fields.hasErrors('supervisorId')}" th:errors="*{supervisorId}"></span>
+  <br/>
+  <button type="submit">Update</button>
+</form>
+<a href="@{/thesis-requests}">Back to Thesis Requests List</a>
+</body>
+</html>
