@@ -48,7 +48,7 @@ public class TeacherServiceImpl implements TeacherService {
     public TeacherDTO updateTeacher(Long id, TeacherDTO teacherDTO) {
         Teacher teacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
-        teacher.setName(teacherDTO.getName());  // Update fields as necessary
+        teacher.setName(teacherDTO.getName());
         Teacher updatedTeacher = teacherRepository.save(teacher);
         return modelMapper.map(updatedTeacher, TeacherDTO.class);
     }

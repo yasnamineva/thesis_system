@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Recension</title>
+</head>
+<body>
+<h1>Create Recension</h1>
+<form th:action="@{/recensions/create}" method="post" th:object="${recension}">
+    <!-- Submission Date -->
+    <label>Submission Date (yyyy-MM-dd):</label>
+    <input type="date" th:field="*{submissionDate}" required/>
+    <span th:if="${#fields.hasErrors('submissionDate')}" th:errors="*{submissionDate}"></span>
+    <br/>
+
+    <!-- Conclusion -->
+    <label>Conclusion:</label>
+    <input type="checkbox" th:field="*{conclusion}"/>
+    <span th:if="${#fields.hasErrors('conclusion')}" th:errors="*{conclusion}"></span>
+    <br/>
+
+    <!-- Thesis ID -->
+    <label>Thesis ID:</label>
+    <input type="number" th:field="*{thesisId}" required/>
+    <span th:if="${#fields.hasErrors('thesisId')}" th:errors="*{thesisId}"></span>
+    <br/>
+
+    <button type="submit">Create</button>
+</form>
+<a href="@{/recensions}">Back to Recensions List</a>
+</body>
+</html>
