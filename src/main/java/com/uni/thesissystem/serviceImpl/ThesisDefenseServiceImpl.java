@@ -1,6 +1,7 @@
 package com.uni.thesissystem.serviceImpl;
 
 import com.uni.thesissystem.dto.ThesisDefenseDTO;
+import com.uni.thesissystem.exceptions.EntityDeletionException;
 import com.uni.thesissystem.model.Teacher;
 import com.uni.thesissystem.model.Thesis;
 import com.uni.thesissystem.model.ThesisDefense;
@@ -11,6 +12,7 @@ import com.uni.thesissystem.service.ThesisDefenseService;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -83,6 +85,10 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
 
     @Override
     public void deleteThesisDefense(Long id) {
-        thesisDefenseRepository.deleteById(id);
+        try{
+            thesisDefenseRepository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityDeletionException("Thesis defense", id, ex.getMessage());
+        }
     }
 }

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Thesis</title>
+</head>
+<body>
+<h1>Create Thesis</h1>
+<form th:action="@{/theses/create}" method="post" th:object="${thesis}">
+    <label for="submissionDate">Submission Date (yyyy-MM-dd):</label>
+    <input type="date" th:field="*{submissionDate}" required/>
+    <span th:if="${#fields.hasErrors('submissionDate')}" th:errors="*{submissionDate}"></span>
+    <br/>
+
+    <label for="title">Title:</label>
+    <input type="text" th:field="*{title}" required/>
+    <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+    <br/>
+
+    <label for="requestId">Thesis Request:</label>
+    <select th:field="*{requestId}">
+        <option value="" disabled selected>Select a Thesis Request</option>
+        <option th:each="request : ${thesisRequests}"
+                th:value="${request.id}"
+        th:text="${request.title}"></option>
+    </select>
+    <span th:if="${#fields.hasErrors('requestId')}" th:errors="*{requestId}"></span>
+    <br/>
+
+    <button type="submit">Create</button>
+</form>
+<a th:href="@{/theses}">Back to Thesis List</a>
+</body>
+</html>

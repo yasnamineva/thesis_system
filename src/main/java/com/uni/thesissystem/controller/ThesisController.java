@@ -1,48 +1,81 @@
 package com.uni.thesissystem.controller;
 
 import com.uni.thesissystem.dto.ThesisDTO;
+import com.uni.thesissystem.dto.ThesisRequestDTO;
+import com.uni.thesissystem.service.ThesisRequestService;
 import com.uni.thesissystem.service.ThesisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-
+import javax.validation.Valid;
+import org.springframework.validation.BindingResult;
 import java.util.List;
 
-@RestController
-@RequestMapping("/thesis")
+@Controller
+@RequestMapping("/theses")
 public class ThesisController {
+
 
     @Autowired
     private ThesisService thesisService;
 
-    @PostMapping
-    public ResponseEntity<ThesisDTO> createThesis(@RequestBody ThesisDTO thesisDTO) {
-        ThesisDTO createdThesis = thesisService.saveThesis(thesisDTO);
-        return new ResponseEntity<>(createdThesis, HttpStatus.CREATED);
+    @Autowired
+    private ThesisRequestService thesisRequestService;
+
+    @GetMapping("/create")
+    public String showCreateThesisForm(Model model) {
+        model.addAttribute("thesis", new ThesisDTO());
+        List<ThesisRequestDTO> thesisRequests = thesisRequestService.getAllThesisRequests();
+        model.addAttribute("thesisRequests", thesisRequests);
+        return "theses/create-thesis";
+    }
+
+    @PostMapping("/create")
+    public String createThesis(@Valid @ModelAttribute("thesis") ThesisDTO thesisDTO,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "theses/create-thesis";
+        }
+        thesisService.saveThesis(thesisDTO);
+        return "redirect:/theses";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ThesisDTO> getThesisById(@PathVariable Long id) {
+    public String getThesisById(@PathVariable Long id, Model model) {
         ThesisDTO thesisDTO = thesisService.getThesisById(id);
-        return new ResponseEntity<>(thesisDTO, HttpStatus.OK);
+        model.addAttribute("thesis", thesisDTO);
+        return "theses/view-thesis";
     }
 
     @GetMapping
-    public ResponseEntity<List<ThesisDTO>> getAllTheses() {
+    public String getAllTheses(Model model) {
         List<ThesisDTO> theses = thesisService.getAllTheses();
-        return new ResponseEntity<>(theses, HttpStatus.OK);
+        model.addAttribute("theses", theses);
+        return "theses/list-theses";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ThesisDTO> updateThesis(@PathVariable Long id, @RequestBody ThesisDTO thesisDTO) {
-        ThesisDTO updatedThesis = thesisService.updateThesis(id, thesisDTO);
-        return new ResponseEntity<>(updatedThesis, HttpStatus.OK);
+    @GetMapping("/{id}/edit")
+    public String showEditThesisForm(@PathVariable Long id, Model model) {
+        ThesisDTO thesisDTO = thesisService.getThesisById(id);
+        model.addAttribute("thesis", thesisDTO);
+        return "theses/edit-thesis";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThesis(@PathVariable Long id) {
+    @PostMapping("/{id}/edit")
+    public String updateThesis(@PathVariable Long id,
+                               @Valid @ModelAttribute("thesis") ThesisDTO thesisDTO,
+                               BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "theses/edit-thesis";
+        }
+        thesisService.updateThesis(id, thesisDTO);
+        return "redirect:/theses";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteThesis(@PathVariable Long id) {
         thesisService.deleteThesis(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/theses";
     }
 }

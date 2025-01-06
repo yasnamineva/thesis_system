@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>View Thesis Defense</title>
+</head>
+<body>
+<h1>Thesis Defense Details</h1>
+<p><strong>Date:</strong> <span th:text="${thesisDefense.date}"></span></p>
+<p><strong>Thesis ID:</strong> <span th:text="${thesisDefense.thesisId}"></span></p>
+<p><strong>Teachers:</strong>
+<ul>
+  <li th:each="teacher : ${thesisDefense.teacherIds}" th:text="${teacher.name}"></li>
+</ul>
+</p>
+<p><strong>Marks:</strong> <span th:text="${thesisDefense.marks}"></span></p>
+
+<a th:href="@{/thesis-defenses}">Back to Thesis Defenses List</a>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Thesis List</title>
+</head>
+<body>
+<h1>Thesis List</h1>
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Submission Date</th>
+    <th>Title</th>
+    <th>Request ID</th>
+    <th>Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="thesis : ${theses}">
+    <td th:text="${thesis.id}"></td>
+    <td th:text="${thesis.submissionDate}"></td>
+    <td th:text="${thesis.title}"></td>
+    <td th:text="${thesis.requestId}"></td>
+    <td>
+      <a th:href="@{/theses/{id}(id=${thesis.id})}">View</a>
+      <a th:href="@{/theses/{id}/edit(id=${thesis.id})}">Edit</a>
+      <form th:action="@{/theses/{id}/delete(id=${thesis.id})}" method="post" style="display:inline;">
+        <button type="submit">Delete</button>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<a th:href="@{/theses/create}">Create New Thesis</a>
+</body>
+</html>

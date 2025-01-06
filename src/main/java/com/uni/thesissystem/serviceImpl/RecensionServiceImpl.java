@@ -1,6 +1,7 @@
 package com.uni.thesissystem.serviceImpl;
 
 import com.uni.thesissystem.dto.RecensionDTO;
+import com.uni.thesissystem.exceptions.EntityDeletionException;
 import com.uni.thesissystem.model.Recension;
 import com.uni.thesissystem.model.Thesis;
 import com.uni.thesissystem.repository.RecensionRepository;
@@ -9,6 +10,7 @@ import com.uni.thesissystem.service.RecensionService;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -72,6 +74,10 @@ public class RecensionServiceImpl implements RecensionService {
 
     @Override
     public void deleteRecension(Long id) {
-        recensionRepository.deleteById(id);
+        try{
+            recensionRepository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityDeletionException("Recension", id, ex.getMessage());
+        }
     }
 }

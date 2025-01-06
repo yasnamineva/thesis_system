@@ -1,6 +1,8 @@
 package com.uni.thesissystem.controller;
 
 import com.uni.thesissystem.dto.ThesisRequestDTO;
+import com.uni.thesissystem.service.StudentService;
+import com.uni.thesissystem.service.TeacherService;
 import com.uni.thesissystem.service.ThesisRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,9 +20,17 @@ public class ThesisRequestController {
     @Autowired
     private ThesisRequestService thesisRequestService;
 
+    @Autowired
+    private StudentService studentService;
+
+    @Autowired
+    private TeacherService supervisorService;
+
     @GetMapping("/create")
     public String showCreateThesisRequestForm(Model model) {
         model.addAttribute("thesisRequest", new ThesisRequestDTO());
+        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("supervisors", supervisorService.getAllTeachers());
         return "thesis-requests/create-thesis-request";
     }
 
@@ -52,6 +62,8 @@ public class ThesisRequestController {
     public String showEditThesisRequestForm(@PathVariable Long id, Model model) {
         ThesisRequestDTO thesisRequestDTO = thesisRequestService.getThesisRequestById(id);
         model.addAttribute("thesisRequest", thesisRequestDTO);
+        model.addAttribute("students", studentService.getAllStudents());
+        model.addAttribute("supervisors", supervisorService.getAllTeachers());
         return "thesis-requests/edit-thesis-request";
     }
 

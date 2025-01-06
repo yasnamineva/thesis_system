@@ -1,6 +1,7 @@
 package com.uni.thesissystem.serviceImpl;
 
 import com.uni.thesissystem.dto.ThesisRequestDTO;
+import com.uni.thesissystem.exceptions.EntityDeletionException;
 import com.uni.thesissystem.exceptions.StudentHasThesisRequestException;
 import com.uni.thesissystem.model.Student;
 import com.uni.thesissystem.model.Teacher;
@@ -12,6 +13,7 @@ import com.uni.thesissystem.service.ThesisRequestService;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +42,6 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
             throw new StudentHasThesisRequestException("Student already has submitted a thesis request");
         }
 
-        // Set the associated student and teacher
         Student student = studentRepository.findById(thesisRequestDTO.getStudentId())
                 .orElseThrow(() -> new EntityNotFoundException("Student not found"));
         thesisRequest.setStudent(student);
@@ -74,9 +75,7 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
 
         Long oldStudentId = thesisRequest.getStudent().getId();
         Long newStudentId = thesisRequestDTO.getStudentId();
-        // Check if the student ID is changing
         if (!oldStudentId.equals(newStudentId)) {
-            // Check if the new student already has a thesis request
             boolean studentHasRequest = thesisRequestRepository.existsByStudentId(newStudentId);
             if (studentHasRequest) {
                 throw new StudentHasThesisRequestException("Student already has submitted a thesis request");
@@ -100,6 +99,10 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
 
     @Override
     public void deleteThesisRequest(Long id) {
-        thesisRequestRepository.deleteById(id);
+        try{
+            thesisRequestRepository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityDeletionException("Thesis request", id, ex.getMessage());
+        }
     }
 }

@@ -58,6 +58,6 @@ public class TeacherServiceImpl implements TeacherService {
         try {
             teacherRepository.deleteById(id);
         } catch (DataIntegrityViolationException ex) {
-            throw new EntityDeletionException("Teacher", id);
+            throw new EntityDeletionException("Teacher", id, ex.getMessage());
         }    }
 }

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>View Recension</title>
+</head>
+<body>
+<h1>Recension Details</h1>
+<p><strong>ID:</strong> <span th:text="${recension.id}"></span></p>
+<p><strong>Submission Date:</strong> <span th:text="${recension.submissionDate}"></span></p>
+<p><strong>Conclusion:</strong>
+  <span th:text="${recension.conclusion ? 'Yes' : 'No'}"></span>
+</p>
+<p><strong>Thesis ID:</strong> <span th:text="${recension.thesisId}"></span></p>
+<a th:href="@{/recensions}">Back to Recensions List</a>
+</body>
+</html>

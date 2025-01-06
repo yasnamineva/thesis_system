@@ -1,48 +1,98 @@
 package com.uni.thesissystem.controller;
 
 import com.uni.thesissystem.dto.RecensionDTO;
+import com.uni.thesissystem.dto.ThesisDTO;
 import com.uni.thesissystem.service.RecensionService;
+import javax.validation.Valid;
+
+import com.uni.thesissystem.service.ThesisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@RestController
+@Controller
 @RequestMapping("/recensions")
 public class RecensionController {
-
     @Autowired
     private RecensionService recensionService;
 
-    @PostMapping
-    public ResponseEntity<RecensionDTO> createRecension(@RequestBody RecensionDTO recensionDTO) {
-        RecensionDTO createdRecension = recensionService.saveRecension(recensionDTO);
-        return new ResponseEntity<>(createdRecension, HttpStatus.CREATED);
+    @Autowired
+    private ThesisService thesisService;
+
+    @GetMapping("/create")
+    public String showCreateRecensionForm(Model model) {
+        model.addAttribute("recension", new RecensionDTO());
+        List<ThesisDTO> theses = thesisService.getAllTheses();
+        model.addAttribute("theses", theses);
+        return "recensions/create-recension";
+    }
+
+    @PostMapping("/create")
+    public String createRecension(@Valid @ModelAttribute("recension") RecensionDTO recensionDTO,
+                                  BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            List<ThesisDTO> theses = thesisService.getAllTheses();
+            model.addAttribute("theses", theses);
+            return "recensions/create-recension";
+        }
+        recensionService.saveRecension(recensionDTO);
+        return "redirect:/recensions";
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RecensionDTO> getRecensionById(@PathVariable Long id) {
+    public String getRecensionById(@PathVariable Long id, Model model) {
         RecensionDTO recensionDTO = recensionService.getRecensionById(id);
-        return new ResponseEntity<>(recensionDTO, HttpStatus.OK);
+        model.addAttribute("recension", recensionDTO);
+        return "recensions/view-recension";
     }
 
     @GetMapping
-    public ResponseEntity<List<RecensionDTO>> getAllRecensions() {
+    public String getAllRecensions(Model model) {
         List<RecensionDTO> recensions = recensionService.getAllRecensions();
-        return new ResponseEntity<>(recensions, HttpStatus.OK);
+        Map<Long, String> thesisTitles = new HashMap<>();
+
+        for (RecensionDTO recension : recensions) {
+            ThesisDTO thesis = thesisService.getThesisById(recension.getThesisId());
+            if (thesis != null) {
+                thesisTitles.put(recension.getThesisId(), thesis.getTitle());
+            }
+        }
+
+        model.addAttribute("recensions", recensions);
+        model.addAttribute("thesisTitles", thesisTitles);
+
+        return "recensions/list-recensions";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<RecensionDTO> updateRecension(@PathVariable Long id, @RequestBody RecensionDTO recensionDTO) {
-        RecensionDTO updatedRecension = recensionService.updateRecension(id, recensionDTO);
-        return new ResponseEntity<>(updatedRecension, HttpStatus.OK);
+
+
+    @GetMapping("/{id}/edit")
+    public String showEditRecensionForm(@PathVariable Long id, Model model) {
+        RecensionDTO recensionDTO = recensionService.getRecensionById(id);
+        model.addAttribute("recension", recensionDTO);
+        return "recensions/edit-recension";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteRecension(@PathVariable Long id) {
+    @PostMapping("/{id}/edit")
+    public String updateRecension(@PathVariable Long id,
+                                  @Valid @ModelAttribute("recension") RecensionDTO recensionDTO,
+                                  BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "recensions/edit-recension";
+        }
+        recensionService.updateRecension(id, recensionDTO);
+        return "redirect:/recensions";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteRecension(@PathVariable Long id) {
         recensionService.deleteRecension(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/recensions";
     }
 }

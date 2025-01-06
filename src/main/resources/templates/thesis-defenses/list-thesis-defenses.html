@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Thesis Defenses List</title>
+</head>
+<body>
+<h1>Thesis Defenses List</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Date</th>
+        <th>Thesis ID</th>
+        <th>Thesis Title</th>
+        <th>Teachers</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="thesisDefense : ${thesisDefenses}">
+        <td th:text="${thesisDefense.id}"></td>
+        <td th:text="${thesisDefense.date}"></td>
+        <td th:text="${thesisDefense.thesisId}"></td>
+        <td th:text="${thesisDefense.thesisTitle}"></td>
+        <td>
+      <span th:each="teacherId : ${thesisDefense.teacherIds}">
+        <span th:text="${teachers[teacherId].name}"></span><br/>
+      </span>
+        </td>
+        <td>
+            <a th:href="@{/thesis-defenses/{id}(id=${thesisDefense.id})}">View</a>
+            <a th:href="@{/thesis-defenses/{id}/edit(id=${thesisDefense.id})}">Edit</a>
+            <form th:action="@{/thesis-defenses/{id}/delete(id=${thesisDefense.id})}" method="post" style="display:inline;">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a th:href="@{/thesis-defenses/create}">Create New Thesis Defense</a>
+</body>
+</html>

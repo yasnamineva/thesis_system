@@ -14,16 +14,27 @@
   <textarea th:field="*{description}" required></textarea>
   <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
   <br/>
-  <label>Student ID:</label>
-  <input type="number" th:field="*{studentId}" required/>
+
+  <label>Student:</label>
+  <select th:field="*{studentId}" required>
+    <option th:each="student : ${students}"
+            th:value="${student.id}"
+            th:text="${student.name}"></option>
+  </select>
   <span th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
   <br/>
-  <label>Supervisor ID:</label>
-  <input type="number" th:field="*{supervisorId}" required/>
+
+  <label>Supervisor:</label>
+  <select th:field="*{supervisorId}" required>
+    <option th:each="supervisor : ${supervisors}"
+            th:value="${supervisor.id}"
+            th:text="${supervisor.name}"></option>
+  </select>
   <span th:if="${#fields.hasErrors('supervisorId')}" th:errors="*{supervisorId}"></span>
   <br/>
+
   <button type="submit">Update</button>
 </form>
-<a href="@{/thesis-requests}">Back to Thesis Requests List</a>
+<a th:href="@{/thesis-requests}">Back to Thesis Requests List</a>
 </body>
 </html>

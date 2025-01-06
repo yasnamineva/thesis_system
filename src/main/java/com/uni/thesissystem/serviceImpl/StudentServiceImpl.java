@@ -1,12 +1,14 @@
 package com.uni.thesissystem.serviceImpl;
 
 import com.uni.thesissystem.dto.StudentDTO;
+import com.uni.thesissystem.exceptions.EntityDeletionException;
 import com.uni.thesissystem.model.Student;
 import com.uni.thesissystem.repository.StudentRepository;
 import com.uni.thesissystem.service.StudentService;
 import jakarta.persistence.EntityNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -53,6 +55,10 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public void deleteStudent(Long id) {
-        studentRepository.deleteById(id);
+        try{
+            studentRepository.deleteById(id);
+        } catch (DataIntegrityViolationException ex) {
+            throw new EntityDeletionException("Student", id, ex.getMessage());
+        }
     }
 }

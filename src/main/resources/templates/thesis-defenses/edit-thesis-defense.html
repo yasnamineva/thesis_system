@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Edit Thesis Defense</title>
+</head>
+<body>
+<h1>Edit Thesis Defense</h1>
+<form th:action="@{/thesis-defenses/{id}/edit(id=${thesisDefense.id})}" method="post" th:object="${thesisDefense}">
+  <label>Date:</label>
+  <input type="date" th:field="*{date}" required/>
+  <span th:if="${#fields.hasErrors('date')}" th:errors="*{date}"></span>
+  <br/>
+
+  <label>Thesis ID:</label>
+  <input type="number" th:field="*{thesisId}" required/>
+  <span th:if="${#fields.hasErrors('thesisId')}" th:errors="*{thesisId}"></span>
+  <br/>
+
+  <label>Teachers:</label>
+  <select th:field="*{teacherIds}" multiple required>
+    <option th:each="teacher : ${teachers}"
+            th:value="${teacher.id}"
+            th:text="${teacher.name}"></option>
+  </select>
+  <span th:if="${#fields.hasErrors('teacherIds')}" th:errors="*{teacherIds}"></span>
+  <br/>
+
+  <label>Marks:</label>
+  <input type="text" th:field="*{marks}" placeholder="Enter marks separated by commas" required/>
+  <span th:if="${#fields.hasErrors('marks')}" th:errors="*{marks}"></span>
+  <br/>
+
+  <button type="submit">Update</button>
+</form>
+
+<a th:href="@{/thesis-defenses}">Back to Thesis Defenses List</a>
+</body>
+</html>

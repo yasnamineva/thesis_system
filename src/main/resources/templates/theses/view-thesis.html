@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>View Thesis</title>
+</head>
+<body>
+<h1>Thesis Details</h1>
+<p><strong>ID:</strong> <span th:text="${thesis.id}"></span></p>
+<p><strong>Submission Date:</strong> <span th:text="${thesis.submissionDate}"></span></p>
+<p><strong>Title:</strong> <span th:text="${thesis.title}"></span></p>
+<p><strong>Request ID:</strong> <span th:text="${thesis.request?.id}"></span></p>
+<a th:href="@{/theses}">Back to Theses List</a>
+</body>
+</html>

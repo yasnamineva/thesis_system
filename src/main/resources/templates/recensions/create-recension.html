@@ -6,26 +6,29 @@
 <body>
 <h1>Create Recension</h1>
 <form th:action="@{/recensions/create}" method="post" th:object="${recension}">
-    <!-- Submission Date -->
-    <label>Submission Date (yyyy-MM-dd):</label>
+    <label for="submissionDate">Submission Date (yyyy-MM-dd):</label>
     <input type="date" th:field="*{submissionDate}" required/>
     <span th:if="${#fields.hasErrors('submissionDate')}" th:errors="*{submissionDate}"></span>
     <br/>
 
-    <!-- Conclusion -->
-    <label>Conclusion:</label>
+    <label for="conclusion">Conclusion:</label>
     <input type="checkbox" th:field="*{conclusion}"/>
     <span th:if="${#fields.hasErrors('conclusion')}" th:errors="*{conclusion}"></span>
     <br/>
 
-    <!-- Thesis ID -->
-    <label>Thesis ID:</label>
-    <input type="number" th:field="*{thesisId}" required/>
+    <label for="thesisId">Thesis:</label>
+    <select th:field="*{thesisId}">
+        <option value="" disabled selected>Select a Thesis</option>
+        <option th:each="thesis : ${theses}"
+                th:value="${thesis.id}"
+                th:text="${thesis.title}"></option>
+    </select>
     <span th:if="${#fields.hasErrors('thesisId')}" th:errors="*{thesisId}"></span>
     <br/>
 
     <button type="submit">Create</button>
 </form>
-<a href="@{/recensions}">Back to Recensions List</a>
+
+<a th:href="@{/recensions}">Back to Recensions List</a>
 </body>
 </html>

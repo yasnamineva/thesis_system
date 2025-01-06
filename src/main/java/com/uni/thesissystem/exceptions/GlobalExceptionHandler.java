@@ -26,7 +26,6 @@ public class GlobalExceptionHandler {
         return "error";
     }
 
-    // Catch all other exceptions
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception ex, Model model) {
         model.addAttribute("errorMessage", "An unexpected error occurred: " + ex.getMessage());

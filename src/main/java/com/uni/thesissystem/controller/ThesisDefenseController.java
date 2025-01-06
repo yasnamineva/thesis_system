@@ -1,48 +1,97 @@
 package com.uni.thesissystem.controller;
 
+import com.uni.thesissystem.dto.TeacherDTO;
 import com.uni.thesissystem.dto.ThesisDefenseDTO;
+import com.uni.thesissystem.service.TeacherService;
 import com.uni.thesissystem.service.ThesisDefenseService;
+import com.uni.thesissystem.service.ThesisService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
-@RestController
+@Controller
 @RequestMapping("/thesis-defenses")
 public class ThesisDefenseController {
 
     @Autowired
     private ThesisDefenseService thesisDefenseService;
 
-    @PostMapping
-    public ResponseEntity<ThesisDefenseDTO> createThesisDefense(@RequestBody ThesisDefenseDTO thesisDefenseDTO) {
-        ThesisDefenseDTO createdThesisDefense = thesisDefenseService.saveThesisDefense(thesisDefenseDTO);
-        return new ResponseEntity<>(createdThesisDefense, HttpStatus.CREATED);
+    @Autowired
+    private ThesisService thesisService;
+
+    @Autowired
+    private TeacherService teacherService;
+
+    @GetMapping("/create")
+    public String showCreateThesisDefenseForm(Model model) {
+        model.addAttribute("thesisDefense", new ThesisDefenseDTO());
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        model.addAttribute("theses", thesisService.getAllTheses());
+        return "thesis-defenses/create-thesis-defense";
     }
+
+
+    @PostMapping("/create")
+    public String createThesisDefense(@Valid @ModelAttribute("thesisDefense") ThesisDefenseDTO thesisDefenseDTO,
+                                      BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("teachers", teacherService.getAllTeachers());
+            model.addAttribute("theses", thesisService.getAllTheses());
+            return "thesis-defenses/create-thesis-defense";
+        }
+        thesisDefenseService.saveThesisDefense(thesisDefenseDTO);
+        return "redirect:/thesis-defenses";
+    }
+
 
     @GetMapping("/{id}")
-    public ResponseEntity<ThesisDefenseDTO> getThesisDefenseById(@PathVariable Long id) {
+    public String getThesisDefenseById(@PathVariable Long id, Model model) {
         ThesisDefenseDTO thesisDefenseDTO = thesisDefenseService.getThesisDefenseById(id);
-        return new ResponseEntity<>(thesisDefenseDTO, HttpStatus.OK);
+        model.addAttribute("thesisDefense", thesisDefenseDTO);
+        return "thesis-defenses/view-thesis-defense";
     }
+
 
     @GetMapping
-    public ResponseEntity<List<ThesisDefenseDTO>> getAllThesisDefenses() {
+    public String getAllThesisDefenses(Model model) {
         List<ThesisDefenseDTO> thesisDefenses = thesisDefenseService.getAllThesisDefenses();
-        return new ResponseEntity<>(thesisDefenses, HttpStatus.OK);
+        model.addAttribute("thesisDefenses", thesisDefenses);
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        return "thesis-defenses/list-thesis-defenses";
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ThesisDefenseDTO> updateThesisDefense(@PathVariable Long id, @RequestBody ThesisDefenseDTO thesisDefenseDTO) {
-        ThesisDefenseDTO updatedThesisDefense = thesisDefenseService.updateThesisDefense(id, thesisDefenseDTO);
-        return new ResponseEntity<>(updatedThesisDefense, HttpStatus.OK);
+    @GetMapping("/{id}/edit")
+    public String showEditThesisDefenseForm(@PathVariable Long id, Model model) {
+        ThesisDefenseDTO thesisDefenseDTO = thesisDefenseService.getThesisDefenseById(id);
+        model.addAttribute("thesisDefense", thesisDefenseDTO);
+        model.addAttribute("teachers", teacherService.getAllTeachers());
+        model.addAttribute("theses", thesisService.getAllTheses());
+        return "thesis-defenses/edit-thesis-defense";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteThesisDefense(@PathVariable Long id) {
+    @PostMapping("/{id}/edit")
+    public String updateThesisDefense(@PathVariable Long id,
+                                      @Valid @ModelAttribute("thesisDefense") ThesisDefenseDTO thesisDefenseDTO,
+                                      BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("teachers", teacherService.getAllTeachers());
+            model.addAttribute("theses", thesisService.getAllTheses());
+            return "thesis-defenses/edit-thesis-defense";
+        }
+        thesisDefenseService.updateThesisDefense(id, thesisDefenseDTO);
+        return "redirect:/thesis-defenses";
+    }
+
+    @PostMapping("/{id}/delete")
+    public String deleteThesisDefense(@PathVariable Long id) {
         thesisDefenseService.deleteThesisDefense(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/thesis-defenses";
     }
 }

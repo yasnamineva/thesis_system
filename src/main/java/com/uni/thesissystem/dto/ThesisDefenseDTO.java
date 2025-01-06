@@ -25,4 +25,6 @@ public class ThesisDefenseDTO {
 
     @NotNull
     private Long thesisId;
+
+    private String thesisTitle;
 }
