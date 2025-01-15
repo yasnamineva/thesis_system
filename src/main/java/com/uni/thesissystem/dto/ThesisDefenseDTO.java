@@ -16,11 +16,11 @@ public class ThesisDefenseDTO {
 
     private List<Long> marks;
 
-    @UniqueElements
     @NotBlank
-    private List<Long> teacherIds;
+    private Long teacherId;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @Past
     private LocalDate date;
 
     @NotNull

@@ -16,13 +16,13 @@
   <span th:if="${#fields.hasErrors('thesisId')}" th:errors="*{thesisId}"></span>
   <br/>
 
-  <label>Teachers:</label>
-  <select th:field="*{teacherIds}" multiple required>
+  <label>Teacher:</label>
+  <select th:field="*{teacherId}" required>
     <option th:each="teacher : ${teachers}"
             th:value="${teacher.id}"
             th:text="${teacher.name}"></option>
   </select>
-  <span th:if="${#fields.hasErrors('teacherIds')}" th:errors="*{teacherIds}"></span>
+  <span th:if="${#fields.hasErrors('teacherId')}" th:errors="*{teacherId}"></span>
   <br/>
 
   <label>Marks:</label>

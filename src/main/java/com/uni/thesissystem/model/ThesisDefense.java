@@ -13,18 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ThesisDefense extends IdGenerator {
-    @ElementCollection
-    private List<Long> marks;
 
-    @ManyToMany
-    @JoinTable(name = "defense_teachers",
-            joinColumns = @JoinColumn(name = "defense_id"),
-            inverseJoinColumns = @JoinColumn(name = "teacher_id"))
-    private List<Teacher> teachers;
+    @ElementCollection
+    @CollectionTable(name = "thesis_defense_marks", joinColumns = @JoinColumn(name = "thesis_defense_id"))
+    private List<Long> marks;
 
     private LocalDate date;
 
     @ManyToOne
-    @JoinColumn(name = "thesis_id")
+    @JoinColumn(name = "teacher_id", nullable = false)
+    private Teacher teacher;
+
+    @ManyToOne
+    @JoinColumn(name = "thesis_id", nullable = false)
     private Thesis thesis;
 }
+

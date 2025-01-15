@@ -20,8 +20,7 @@
     <select th:field="*{requestId}">
         <option value="" disabled selected>Select a Thesis Request</option>
         <option th:each="request : ${thesisRequests}"
-                th:value="${request.id}"
-        th:text="${request.title}"></option>
+                th:value="${request.id}" th:text="${request.title}"></option>
     </select>
     <span th:if="${#fields.hasErrors('requestId')}" th:errors="*{requestId}"></span>
     <br/>

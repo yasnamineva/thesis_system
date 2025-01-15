@@ -8,7 +8,9 @@
 <p><strong>ID:</strong> <span th:text="${thesis.id}"></span></p>
 <p><strong>Submission Date:</strong> <span th:text="${thesis.submissionDate}"></span></p>
 <p><strong>Title:</strong> <span th:text="${thesis.title}"></span></p>
-<p><strong>Request ID:</strong> <span th:text="${thesis.request?.id}"></span></p>
+<p><strong>Request Title:</strong>
+  <span th:text="${thesis.requestId != null ? 'Request ' + thesis.requestId : 'No request'}"></span>
+</p>
 <a th:href="@{/theses}">Back to Theses List</a>
 </body>
 </html>

@@ -6,18 +6,23 @@
 <body>
 <h1>Edit Thesis</h1>
 <form th:action="@{/theses/{id}/edit(id=${thesis.id})}" method="post" th:object="${thesis}">
-  <label>Submission Date (yyyy-MM-dd):</label>
+  <label for="submissionDate">Submission Date (yyyy-MM-dd):</label>
   <input type="date" th:field="*{submissionDate}" required/>
   <span th:if="${#fields.hasErrors('submissionDate')}" th:errors="*{submissionDate}"></span>
   <br/>
 
-  <label>Title:</label>
+  <label for="title">Title:</label>
   <input type="text" th:field="*{title}" required/>
   <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
   <br/>
 
-  <label>Request ID:</label>
-  <input type="number" th:field="*{requestId}" required/>
+  <label for="requestId">Thesis Request:</label>
+  <select th:field="*{requestId}" required>
+    <option th:each="request : ${thesisRequests}"
+            th:value="${request.id}"
+            th:text="${request.title}"
+            th:selected="${thesis.requestId != null and thesis.requestId == request.id}"></option>
+  </select>
   <span th:if="${#fields.hasErrors('requestId')}" th:errors="*{requestId}"></span>
   <br/>
 

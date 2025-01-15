@@ -12,7 +12,7 @@
         <th>Date</th>
         <th>Thesis ID</th>
         <th>Thesis Title</th>
-        <th>Teachers</th>
+        <th>Teacher</th>
         <th>Actions</th>
     </tr>
     </thead>
@@ -22,11 +22,7 @@
         <td th:text="${thesisDefense.date}"></td>
         <td th:text="${thesisDefense.thesisId}"></td>
         <td th:text="${thesisDefense.thesisTitle}"></td>
-        <td>
-      <span th:each="teacherId : ${thesisDefense.teacherIds}">
-        <span th:text="${teachers[teacherId].name}"></span><br/>
-      </span>
-        </td>
+        <td th:text="${teachers[thesisDefense.teacherId]?.name}"></td>
         <td>
             <a th:href="@{/thesis-defenses/{id}(id=${thesisDefense.id})}">View</a>
             <a th:href="@{/thesis-defenses/{id}/edit(id=${thesisDefense.id})}">Edit</a>

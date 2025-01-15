@@ -58,9 +58,12 @@ public class ThesisController {
     @GetMapping("/{id}/edit")
     public String showEditThesisForm(@PathVariable Long id, Model model) {
         ThesisDTO thesisDTO = thesisService.getThesisById(id);
+        List<ThesisRequestDTO> thesisRequests = thesisRequestService.getAllThesisRequests();
         model.addAttribute("thesis", thesisDTO);
+        model.addAttribute("thesisRequests", thesisRequests);
         return "theses/edit-thesis";
     }
+
 
     @PostMapping("/{id}/edit")
     public String updateThesis(@PathVariable Long id,

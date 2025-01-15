@@ -15,7 +15,6 @@ import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
 @Controller
 @RequestMapping("/thesis-defenses")
 public class ThesisDefenseController {
@@ -37,7 +36,6 @@ public class ThesisDefenseController {
         return "thesis-defenses/create-thesis-defense";
     }
 
-
     @PostMapping("/create")
     public String createThesisDefense(@Valid @ModelAttribute("thesisDefense") ThesisDefenseDTO thesisDefenseDTO,
                                       BindingResult bindingResult, Model model) {
@@ -50,11 +48,14 @@ public class ThesisDefenseController {
         return "redirect:/thesis-defenses";
     }
 
-
     @GetMapping("/{id}")
     public String getThesisDefenseById(@PathVariable Long id, Model model) {
         ThesisDefenseDTO thesisDefenseDTO = thesisDefenseService.getThesisDefenseById(id);
+
+        TeacherDTO teacher = teacherService.getTeacherById(thesisDefenseDTO.getTeacherId());
         model.addAttribute("thesisDefense", thesisDefenseDTO);
+        model.addAttribute("teacher", teacher);
+
         return "thesis-defenses/view-thesis-defense";
     }
 
@@ -62,8 +63,12 @@ public class ThesisDefenseController {
     @GetMapping
     public String getAllThesisDefenses(Model model) {
         List<ThesisDefenseDTO> thesisDefenses = thesisDefenseService.getAllThesisDefenses();
+
+        Map<Long, TeacherDTO> teacherMap = teacherService.getAllTeachers().stream()
+                .collect(Collectors.toMap(TeacherDTO::getId, teacher -> teacher));
+
         model.addAttribute("thesisDefenses", thesisDefenses);
-        model.addAttribute("teachers", teacherService.getAllTeachers());
+        model.addAttribute("teachers", teacherMap);
         return "thesis-defenses/list-thesis-defenses";
     }
 

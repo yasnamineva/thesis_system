@@ -33,7 +33,6 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
     @Autowired
     private ModelMapper modelMapper;
 
-    @Override
     public ThesisDefenseDTO saveThesisDefense(ThesisDefenseDTO thesisDefenseDTO) {
         ThesisDefense thesisDefense = new ThesisDefense();
         thesisDefense.setMarks(thesisDefenseDTO.getMarks());
@@ -43,12 +42,18 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
                 .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
         thesisDefense.setThesis(thesis);
 
-        List<Teacher> teachers = teacherRepository.findAllById(thesisDefenseDTO.getTeacherIds());
-        thesisDefense.setTeachers(teachers);
+        Teacher teacher = teacherRepository.findById(thesisDefenseDTO.getTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
+        thesisDefense.setTeacher(teacher);
 
+        // Add the defense to the teacher's list of defenses
+        teacher.getDefenses().add(thesisDefense);
+
+        // Save the thesis defense
         ThesisDefense savedThesisDefense = thesisDefenseRepository.save(thesisDefense);
         return modelMapper.map(savedThesisDefense, ThesisDefenseDTO.class);
     }
+
 
     @Override
     public ThesisDefenseDTO getThesisDefenseById(Long id) {
@@ -76,8 +81,9 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
                 .orElseThrow(() -> new EntityNotFoundException("Thesis not found"));
         thesisDefense.setThesis(thesis);
 
-        List<Teacher> teachers = teacherRepository.findAllById(thesisDefenseDTO.getTeacherIds());
-        thesisDefense.setTeachers(teachers);
+        Teacher teacher = teacherRepository.findById(thesisDefenseDTO.getTeacherId())
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found"));
+        thesisDefense.setTeacher(teacher);
 
         ThesisDefense updatedThesisDefense = thesisDefenseRepository.save(thesisDefense);
         return modelMapper.map(updatedThesisDefense, ThesisDefenseDTO.class);
