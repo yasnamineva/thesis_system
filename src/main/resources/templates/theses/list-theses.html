@@ -2,39 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Thesis List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #333;
+      color: white;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #8b8b8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #7a7a7a;
+    }
+
+    .create-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h1>Thesis List</h1>
-
-<!-- Table to display the list of theses -->
 <table>
   <thead>
   <tr>
     <th>ID</th>
     <th>Submission Date</th>
     <th>Title</th>
-    <th>Request Title</th>  <!-- Title of the thesis request -->
+    <th>Thesis Request</th>
     <th>Actions</th>
   </tr>
   </thead>
   <tbody>
-  <!-- Loop through the list of theses and display their information -->
   <tr th:each="thesis : ${theses}">
     <td th:text="${thesis.id}"></td>
     <td th:text="${thesis.submissionDate}"></td>
     <td th:text="${thesis.title}"></td>
-
-    <!-- Using requestId to fetch the corresponding request title -->
     <td th:text="${thesis.requestId != null ? 'Request ' + thesis.requestId : 'No request'}"></td>
-
     <td>
-      <!-- Link to view the thesis -->
       <a th:href="@{/theses/{id}(id=${thesis.id})}">View</a>
-
-      <!-- Link to edit the thesis -->
       <a th:href="@{/theses/{id}/edit(id=${thesis.id})}">Edit</a>
-
-      <!-- Form to delete the thesis -->
       <form th:action="@{/theses/{id}/delete(id=${thesis.id})}" method="post" style="display:inline;">
         <button type="submit">Delete</button>
       </form>
@@ -42,9 +93,6 @@
   </tr>
   </tbody>
 </table>
-
-<!-- Link to create a new thesis -->
-<a th:href="@{/theses/create}">Create New Thesis</a>
-
+<a th:href="@{/theses/create}" class="create-link">Create New Thesis</a>
 </body>
 </html>

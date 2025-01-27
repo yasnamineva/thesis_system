@@ -2,6 +2,68 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Thesis Requests List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    table {
+      width: 80%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #333;
+      color: white;
+    }
+
+    a {
+      text-decoration: none;
+      color: #333;
+      margin-right: 10px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #8b8b8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #7a7a7a;
+    }
+
+    .create-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h1>Thesis Requests List</h1>
@@ -27,6 +89,7 @@
   </tr>
   </tbody>
 </table>
-<a th:href="@{/thesis-requests/create}">Create New Thesis Request</a>
+
+<a th:href="@{/thesis-requests/create}" class="create-link">Create New Thesis Request</a>
 </body>
 </html>

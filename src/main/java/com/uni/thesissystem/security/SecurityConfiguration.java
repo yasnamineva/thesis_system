@@ -28,13 +28,17 @@ public class SecurityConfiguration {
                 .authenticationProvider(authenticationProvider())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((requests) -> requests
-                .requestMatchers("/auth/login", "/auth/register").permitAll()
-                .anyRequest().authenticated()
-        ).formLogin((form) -> form
-                .loginPage("/auth/login")
-                .defaultSuccessUrl("/auth/navbar", true)
-                .permitAll()
-        ).logout(LogoutConfigurer::permitAll);
+                        .requestMatchers("/auth/login", "/auth/register").permitAll()
+//                        .requestMatchers("/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/dashboard/student").hasRole("STUDENT")
+                        .requestMatchers("/dashboard/teacher").hasRole("TEACHER")
+                        .requestMatchers("/theses/**", "/students/**", "/thesis-requests/**", "/thesis-defenses/**", "/recensions/**", "/teachers/**").hasRole("ADMIN")
+                        .anyRequest().authenticated()
+                ).formLogin((form) -> form
+                        .loginPage("/auth/login")
+                        .defaultSuccessUrl("/auth/navbar", true)
+                        .permitAll()
+                ).logout(LogoutConfigurer::permitAll);
 
         return http.build();
     }

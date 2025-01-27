@@ -2,6 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Login</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h2 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 8px;
+      width: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      text-align: left;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #8b8b8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #7a7a7a;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h2>Login</h2>
@@ -24,7 +85,6 @@
 <div th:if="${param.error}">
   <p style="color: red;" th:text="${param.error == 'true' ? 'Invalid username or password. Please try again.' : 'Authentication failed. Please try again.'}"></p>
 </div>
-
 
 <!-- Register Link -->
 <p>Don't have an account? <a href="/auth/register">Register here</a></p>

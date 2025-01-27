@@ -2,39 +2,94 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Create Thesis Request</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    form {
+      background-color: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 8px;
+      width: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    label {
+      display: block;
+      margin: 10px 0;
+      text-align: left;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #8b8b8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #7a7a7a;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h1>Create Thesis Request</h1>
 <form th:action="@{/thesis-requests/create}" method="post" th:object="${thesisRequest}">
-  <label>Title:</label>
+  <label for="title">Title:</label>
   <input type="text" th:field="*{title}" required/>
   <span th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
-  <br/>
-  <label>Description:</label>
+
+  <label for="description">Description:</label>
   <textarea th:field="*{description}" required></textarea>
   <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></span>
-  <br/>
 
-  <label>Student:</label>
+  <label for="student">Student:</label>
   <select th:field="*{studentId}" required>
-    <option th:each="student : ${students}"
-            th:value="${student.id}"
-            th:text="${student.name}"></option>
+    <option th:each="student : ${students}" th:value="${student.id}" th:text="${student.name}"></option>
   </select>
   <span th:if="${#fields.hasErrors('studentId')}" th:errors="*{studentId}"></span>
-  <br/>
 
-  <label>Supervisor:</label>
+  <label for="supervisor">Supervisor:</label>
   <select th:field="*{supervisorId}" required>
-    <option th:each="supervisor : ${supervisors}"
-            th:value="${supervisor.id}"
-            th:text="${supervisor.name}"></option>
+    <option th:each="supervisor : ${supervisors}" th:value="${supervisor.id}" th:text="${supervisor.name}"></option>
   </select>
   <span th:if="${#fields.hasErrors('supervisorId')}" th:errors="*{supervisorId}"></span>
-  <br/>
 
   <button type="submit">Create</button>
 </form>
+
 <a th:href="@{/thesis-requests}">Back to Thesis Requests List</a>
 </body>
 </html>

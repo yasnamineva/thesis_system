@@ -2,15 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>View Thesis</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    .thesis-details {
+      background-color: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 8px;
+      width: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .thesis-details p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h1>Thesis Details</h1>
-<p><strong>ID:</strong> <span th:text="${thesis.id}"></span></p>
-<p><strong>Submission Date:</strong> <span th:text="${thesis.submissionDate}"></span></p>
-<p><strong>Title:</strong> <span th:text="${thesis.title}"></span></p>
-<p><strong>Request Title:</strong>
-  <span th:text="${thesis.requestId != null ? 'Request ' + thesis.requestId : 'No request'}"></span>
-</p>
-<a th:href="@{/theses}">Back to Theses List</a>
+<div class="thesis-details">
+  <p><strong>ID:</strong> <span th:text="${thesis.id}"></span></p>
+  <p><strong>Submission Date:</strong> <span th:text="${thesis.submissionDate}"></span></p>
+  <p><strong>Title:</strong> <span th:text="${thesis.title}"></span></p>
+  <p><strong>Request Title:</strong>
+    <span th:text="${thesis.requestId != null ? 'Request ' + thesis.requestId : 'No request'}"></span>
+  </p>
+</div>
+<a th:href="@{/theses}" class="back-link">Back to Thesis List</a>
 </body>
 </html>

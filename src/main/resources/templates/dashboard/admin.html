@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Admin Dashboard</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #e0e0e0;
+        color: #333;
+        text-align: center;
+        margin: 0;
+        padding: 0;
+    }
+    h1 {
+        padding: 30px;
+        background-color: #333;
+        color: white;
+        margin: 0;
+        font-size: 36px;
+        letter-spacing: 1px;
+    }
+    .admin-buttons {
+        margin-top: 50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .btn {
+        padding: 15px 25px;
+        margin: 10px;
+        font-size: 18px;
+        background-color: #8b8b8b;
+        color: white;
+        border: none;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 250px;
+        transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+    .btn:hover {
+        background-color: #7a7a7a;
+        transform: translateY(-3px);
+    }
+    .btn:active {
+        background-color: #666666;
+        transform: translateY(1px);
+    }
+    .btn:focus {
+        outline: none;
+    }
+  </style>
+</head>
+<body>
+
+<h1>Admin Dashboard</h1>
+
+<div class="admin-buttons">
+  <button class="btn" onclick="window.location.href='/theses'">Manage Theses</button>
+  <button class="btn" onclick="window.location.href='/students'">Manage Students</button>
+  <button class="btn" onclick="window.location.href='/teachers'">Manage Teachers</button>
+  <button class="btn" onclick="window.location.href='/thesis-defenses'">Manage Thesis Defenses</button>
+  <button class="btn" onclick="window.location.href='/thesis-requests'">Manage Thesis Requests</button>
+  <button class="btn" onclick="window.location.href='/recensions'">Manage Recensions</button>
+</div>
+
+</body>
+</html>

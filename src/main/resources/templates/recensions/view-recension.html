@@ -2,6 +2,48 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>View Recension</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    p {
+      font-size: 18px;
+      margin: 20px 0;
+    }
+
+    a {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #8b8b8b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #7a7a7a;
+    }
+  </style>
 </head>
 <body>
 <h1>Recension Details</h1>
@@ -12,5 +54,11 @@
 </p>
 <p><strong>Thesis ID:</strong> <span th:text="${recension.thesisId}"></span></p>
 <a th:href="@{/recensions}">Back to Recensions List</a>
+<a th:href="@{/recensions/{id}/edit(id=${recension.id})}">Edit</a>
+
+<form th:action="@{/recensions/{id}/delete(id=${recension.id})}" method="post" style="display:inline;">
+  <input type="hidden" name="_method" value="post"/>
+  <button type="submit">Delete</button>
+</form>
 </body>
 </html>

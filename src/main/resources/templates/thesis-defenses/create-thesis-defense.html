@@ -2,6 +2,67 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Create Thesis Defense</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #e0e0e0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        h1 {
+            padding: 20px;
+            background-color: #333;
+            color: white;
+            margin: 0;
+        }
+
+        form {
+            background-color: white;
+            padding: 30px;
+            margin: 30px auto;
+            border-radius: 8px;
+            width: 50%;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            margin: 10px 0;
+            text-align: left;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #8b8b8b;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        button:hover {
+            background-color: #7a7a7a;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 <h1>Create Thesis Defense</h1>
@@ -30,6 +91,6 @@
     <button type="submit">Create</button>
 </form>
 
-<a th:href="@{/thesis-defenses}">Back to Thesis Defenses List</a>
+<a th:href="@{/thesis-defenses}" class="back-link">Back to Thesis Defenses List</a>
 </body>
 </html>

@@ -2,16 +2,55 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>View Thesis Defense</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      padding: 20px;
+      background-color: #333;
+      color: white;
+      margin: 0;
+    }
+
+    .thesis-details {
+      background-color: white;
+      padding: 30px;
+      margin: 30px auto;
+      border-radius: 8px;
+      width: 50%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .thesis-details p {
+      margin: 10px 0;
+      font-size: 16px;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-top: 20px;
+      text-decoration: none;
+      color: #333;
+    }
+  </style>
 </head>
 <body>
 <h1>Thesis Defense Details</h1>
+<div class="thesis-details">
+  <p><strong>Date:</strong> <span th:text="${thesisDefense.date}"></span></p>
+  <p><strong>Thesis ID:</strong> <span th:text="${thesisDefense.thesisId}"></span></p>
+  <p><strong>Thesis Title:</strong> <span th:text="${thesisDefense.thesisTitle}"></span></p>
+  <p><strong>Teacher:</strong> <span th:text="${teacher?.name}"></span></p>
+  <p><strong>Marks:</strong> <span th:text="${thesisDefense.marks}"></span></p>
+</div>
 
-<p><strong>Date:</strong> <span th:text="${thesisDefense.date}"></span></p>
-<p><strong>Thesis ID:</strong> <span th:text="${thesisDefense.thesisId}"></span></p>
-<p><strong>Thesis Title:</strong> <span th:text="${thesisDefense.thesisTitle}"></span></p>
-<p><strong>Teacher:</strong> <span th:text="${teacher?.name}"></span></p>
-<p><strong>Marks:</strong> <span th:text="${thesisDefense.marks}"></span></p>
-
-<a th:href="@{/thesis-defenses}">Back to Thesis Defenses List</a>
+<a th:href="@{/thesis-defenses}" class="back-link">Back to Thesis Defenses List</a>
 </body>
 </html>

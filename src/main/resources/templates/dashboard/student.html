@@ -5,17 +5,16 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background-color: #f4f4f9;
+      background-color: #e0e0e0;
       margin: 0;
       padding: 0;
     }
 
     h1 {
       text-align: center;
-      color: #333;
-      padding: 20px;
-      background-color: #5cb85c;
       color: white;
+      padding: 20px;
+      background-color: #333;
       margin: 0;
     }
 
@@ -97,8 +96,6 @@
     <td th:text="${thesisRequest.description}"></td>
     <td th:text="${thesisRequest.technologies != null ? T(java.lang.String).join(', ', thesisRequest.technologies) : 'No technologies listed'}"></td>
     <td th:text="${thesisRequest.isApproved ? 'Yes' : 'No'}"></td>
-
-    <!-- Display associated thesis title -->
     <td>
         <span th:if="${associatedThesis != null}" class="thesis-title">
           <span th:text="${associatedThesis.title}"></span>
@@ -106,7 +103,6 @@
       <span th:if="${associatedThesis == null}" class="no-thesis">No thesis associated</span>
     </td>
 
-    <!-- Display associated thesis submission date -->
     <td>
         <span th:if="${associatedThesis != null}" class="thesis-date">
           <span th:text="${associatedThesis.submissionDate}"></span>

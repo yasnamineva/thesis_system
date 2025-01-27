@@ -2,14 +2,58 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Navbar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #e0e0e0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+    }
+
+    nav {
+      background-color: #333;
+      padding: 10px;
+    }
+
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    li {
+      margin: 0 15px;
+    }
+
+    a {
+      text-decoration: none;
+      color: white;
+      font-size: 16px;
+      padding: 10px;
+      background-color: #8b8b8b;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+
+    a:hover {
+      background-color: #7a7a7a;
+    }
+
+    .active {
+      background-color: #444;
+    }
+  </style>
 </head>
 <body>
-<h2>Welcome to the Dashboard</h2>
 <nav>
   <ul>
-    <li><a th:href="@{/auth/logout}">Logout</a></li>
+    <li><a th:href="@{/auth/logout}" class="active">Logout</a></li>
     <li th:if="${role == 'ROLE_STUDENT'}"><a th:href="@{/dashboard/student}">Student Dashboard</a></li>
     <li th:if="${role == 'ROLE_TEACHER'}"><a th:href="@{/dashboard/teacher}">Teacher Dashboard</a></li>
+    <li th:if="${role == 'ROLE_ADMIN'}"><a th:href="@{/dashboard/admin}">Admin Dashboard</a></li>
   </ul>
 </nav>
 </body>
