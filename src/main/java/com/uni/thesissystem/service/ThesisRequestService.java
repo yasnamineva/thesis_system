@@ -9,5 +9,6 @@ public interface ThesisRequestService {
     ThesisRequestDTO getThesisRequestById(Long id);
     List<ThesisRequestDTO> getAllThesisRequests();
     ThesisRequestDTO updateThesisRequest(Long id, ThesisRequestDTO thesisRequestDTO);
+    List<ThesisRequestDTO> getRequestsForStudent(Long studentId);
     void deleteThesisRequest(Long id);
 }

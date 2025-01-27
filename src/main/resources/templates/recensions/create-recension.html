@@ -17,11 +17,9 @@
     <br/>
 
     <label for="thesisId">Thesis:</label>
-    <select th:field="*{thesisId}">
+    <select th:field="*{thesisId}" required>
         <option value="" disabled selected>Select a Thesis</option>
-        <option th:each="thesis : ${theses}"
-                th:value="${thesis.id}"
-                th:text="${thesis.title}"></option>
+        <option th:each="thesis : ${theses}" th:value="${thesis.id}" th:text="${thesis.title}"></option>
     </select>
     <span th:if="${#fields.hasErrors('thesisId')}" th:errors="*{thesisId}"></span>
     <br/>

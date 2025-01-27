@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Student Dashboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      padding: 20px;
+      background-color: #5cb85c;
+      color: white;
+      margin: 0;
+    }
+
+    h2 {
+      text-align: center;
+      color: #333;
+      margin: 20px 0;
+    }
+
+    table {
+      width: 80%;
+      margin: 30px auto;
+      border-collapse: collapse;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f1f1f1;
+      color: #555;
+      font-weight: bold;
+    }
+
+    td {
+      color: #333;
+      border-top: 1px solid #f1f1f1;
+    }
+
+    tr:nth-child(even) {
+      background-color: #fafafa;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .no-thesis {
+      color: #ff6347;
+      font-style: italic;
+    }
+
+    .thesis-title {
+      color: #5cb85c;
+      font-weight: bold;
+    }
+
+    .thesis-date {
+      color: #555;
+    }
+
+  </style>
+</head>
+<body>
+
+<h1>Welcome to your Dashboard</h1>
+
+<h2>Your Thesis Request</h2>
+<table>
+  <thead>
+  <tr>
+    <th>Title</th>
+    <th>Description</th>
+    <th>Technologies</th>
+    <th>Approved</th>
+    <th>Associated Thesis Title</th>
+    <th>Thesis Submission Date</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:if="${thesisRequest != null}">
+    <td th:text="${thesisRequest.title}"></td>
+    <td th:text="${thesisRequest.description}"></td>
+    <td th:text="${thesisRequest.technologies != null ? T(java.lang.String).join(', ', thesisRequest.technologies) : 'No technologies listed'}"></td>
+    <td th:text="${thesisRequest.isApproved ? 'Yes' : 'No'}"></td>
+
+    <!-- Display associated thesis title -->
+    <td>
+        <span th:if="${associatedThesis != null}" class="thesis-title">
+          <span th:text="${associatedThesis.title}"></span>
+        </span>
+      <span th:if="${associatedThesis == null}" class="no-thesis">No thesis associated</span>
+    </td>
+
+    <!-- Display associated thesis submission date -->
+    <td>
+        <span th:if="${associatedThesis != null}" class="thesis-date">
+          <span th:text="${associatedThesis.submissionDate}"></span>
+        </span>
+      <span th:if="${associatedThesis == null}" class="no-thesis">No thesis associated</span>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>

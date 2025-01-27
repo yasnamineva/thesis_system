@@ -97,6 +97,13 @@ public class ThesisRequestServiceImpl implements ThesisRequestService {
         return modelMapper.map(updatedRequest, ThesisRequestDTO.class);
     }
 
+    public List<ThesisRequestDTO> getRequestsForStudent(Long studentId) {
+        List<ThesisRequest> requests = thesisRequestRepository.findByStudentId(studentId);
+        return requests.stream()
+                .map(request -> modelMapper.map(request, ThesisRequestDTO.class))
+                .collect(Collectors.toList());
+    }
+
     @Override
     public void deleteThesisRequest(Long id) {
         try{

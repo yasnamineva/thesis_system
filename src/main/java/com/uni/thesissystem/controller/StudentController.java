@@ -3,6 +3,8 @@ package com.uni.thesissystem.controller;
 import com.uni.thesissystem.dto.StudentDTO;
 import com.uni.thesissystem.service.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,8 +21,9 @@ public class StudentController {
     private StudentService studentService;
 
     @GetMapping("/create")
-    public String showCreateStudentForm(Model model) {
+    public String showCreateStudentForm(Model model, @AuthenticationPrincipal UserDetails userDetails) {
         model.addAttribute("student", new StudentDTO());
+        model.addAttribute("userRole", userDetails.getAuthorities());
         return "students/create-student";
     }
 

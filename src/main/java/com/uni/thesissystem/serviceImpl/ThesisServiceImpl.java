@@ -73,6 +73,18 @@ public class ThesisServiceImpl implements ThesisService {
         return modelMapper.map(updatedThesis, ThesisDTO.class);
     }
 
+    /**
+     * Fetches the thesis associated with a thesis request.
+     *
+     * @param requestId The ID of the thesis request
+     * @return ThesisDTO representing the associated thesis, or null if not found
+     */
+    @Override
+    public ThesisDTO getThesisByRequestId(Long requestId) {
+        Thesis thesis = thesisRepository.findByRequestId(requestId).orElse(null);
+        return thesis != null ? modelMapper.map(thesis, ThesisDTO.class) : null;
+    }
+
     @Override
     public void deleteThesis(Long id) {
         try{

@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Navbar</title>
+</head>
+<body>
+<h2>Welcome to the Dashboard</h2>
+<nav>
+  <ul>
+    <li><a th:href="@{/auth/logout}">Logout</a></li>
+    <li th:if="${role == 'ROLE_STUDENT'}"><a th:href="@{/dashboard/student}">Student Dashboard</a></li>
+    <li th:if="${role == 'ROLE_TEACHER'}"><a th:href="@{/dashboard/teacher}">Teacher Dashboard</a></li>
+  </ul>
+</nav>
+</body>
+</html>
