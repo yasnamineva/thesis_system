@@ -1,14 +1,8 @@
 package com.uni.thesissystem.controller;
 
-
-import com.uni.thesissystem.dto.StudentDTO;
-import com.uni.thesissystem.dto.TeacherDTO;
-import com.uni.thesissystem.dto.ThesisDTO;
-import com.uni.thesissystem.dto.ThesisRequestDTO;
+import com.uni.thesissystem.dto.*;
 import com.uni.thesissystem.security.CustomUserDetails;
-import com.uni.thesissystem.service.StudentService;
-import com.uni.thesissystem.service.TeacherService;
-import com.uni.thesissystem.service.ThesisRequestService;
+import com.uni.thesissystem.service.*;
 import com.uni.thesissystem.serviceImpl.ThesisRequestServiceImpl;
 import com.uni.thesissystem.serviceImpl.ThesisServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,22 +12,24 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.HashMap;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/dashboard")
 public class DashboardController {
 
     @Autowired
-    private ThesisRequestServiceImpl thesisRequestService;
+    private ThesisRequestService thesisRequestService;
     @Autowired
-    private ThesisServiceImpl thesisService;
+    private ThesisService thesisService;
     @Autowired
     private StudentService studentService;
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private ThesisDefenseService thesisDefenseService;
 
     @GetMapping("/student")
     public String showDashboard(Authentication authentication, Model model) {
@@ -48,6 +44,27 @@ public class DashboardController {
 
             if (thesisRequest != null) {
                 ThesisDTO associatedThesis = thesisService.getThesisByRequestId(thesisRequest.getId());
+
+                if (associatedThesis != null) {
+                    ThesisDefenseDTO associatedDefense = thesisDefenseService.getAllThesisDefenses()
+                            .stream()
+                            .filter(defense -> defense.getThesisId().equals(associatedThesis.getId()))
+                            .findFirst()
+                            .orElse(null);
+
+                    if (associatedDefense != null && associatedDefense.getMarks() != null) {
+                        String marksAsString = associatedDefense.getMarks().stream()
+                                .map(String::valueOf)
+                                .flatMap(mark -> mark.chars()
+                                        .mapToObj(c -> String.valueOf((char) c)))
+                                .collect(Collectors.joining(", "));
+                        model.addAttribute("marksAsString", marksAsString);
+                    } else {
+                        model.addAttribute("marksAsString", "No marks");
+                    }
+
+                    model.addAttribute("associatedDefense", associatedDefense);
+                }
 
                 model.addAttribute("thesisRequest", thesisRequest);
                 model.addAttribute("associatedThesis", associatedThesis);
@@ -76,8 +93,4 @@ public class DashboardController {
             return "error";
         }
     }
-
-
-
-
 }

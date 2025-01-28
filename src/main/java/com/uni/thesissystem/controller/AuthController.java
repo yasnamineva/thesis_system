@@ -54,4 +54,12 @@ public class AuthController {
         return "navbar";
     }
 
+    @GetMapping("/logout")
+    public String logout(Authentication authentication) {
+        if (authentication != null) {
+            System.out.println("Logging out user: " + authentication.getName());
+        }
+        return "redirect:/auth/login?logout";
+    }
+
 }

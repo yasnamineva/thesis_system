@@ -24,7 +24,7 @@ public class ThesisDefense extends IdGenerator {
     @JoinColumn(name = "teacher_id", nullable = false)
     private Teacher teacher;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "thesis_id", nullable = false)
     private Thesis thesis;
 }

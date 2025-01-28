@@ -63,6 +63,17 @@ public class ThesisDefenseServiceImpl implements ThesisDefenseService {
     }
 
     @Override
+    public ThesisDefenseDTO getThesisDefenseByThesisId(Long id) {
+        ThesisDefense thesisDefense = thesisDefenseRepository.findByThesisId(id);
+
+        if (thesisDefense == null) {
+            throw new EntityNotFoundException("Thesis Defense not found");
+        }
+        return modelMapper.map(thesisDefense, ThesisDefenseDTO.class);
+    }
+
+
+    @Override
     public List<ThesisDefenseDTO> getAllThesisDefenses() {
         return thesisDefenseRepository.findAll().stream()
                 .map(thesisDefense -> modelMapper.map(thesisDefense, ThesisDefenseDTO.class))

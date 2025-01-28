@@ -48,6 +48,16 @@
     .btn:focus {
         outline: none;
     }
+    .logout-btn {
+        margin-top: 30px;
+        background-color: #d9534f;
+    }
+    .logout-btn:hover {
+        background-color: #c9302c;
+    }
+    .logout-btn:active {
+        background-color: #ac2925;
+    }
   </style>
 </head>
 <body>
@@ -61,6 +71,7 @@
   <button class="btn" onclick="window.location.href='/thesis-defenses'">Manage Thesis Defenses</button>
   <button class="btn" onclick="window.location.href='/thesis-requests'">Manage Thesis Requests</button>
   <button class="btn" onclick="window.location.href='/recensions'">Manage Recensions</button>
+  <button class="btn logout-btn" onclick="window.location.href='/auth/logout'">Logout</button>
 </div>
 
 </body>

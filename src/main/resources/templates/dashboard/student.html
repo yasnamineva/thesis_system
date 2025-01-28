@@ -16,6 +16,7 @@
       padding: 20px;
       background-color: #333;
       margin: 0;
+      position: relative;
     }
 
     h2 {
@@ -72,11 +73,42 @@
       color: #555;
     }
 
+    /* Logout Button Styles */
+    .logout-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      padding: 10px 20px;
+      font-size: 16px;
+      background-color: #d9534f;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .logout-btn:hover {
+      background-color: #c9302c;
+      transform: translateY(-3px);
+    }
+
+    .logout-btn:active {
+      background-color: #ac2925;
+      transform: translateY(1px);
+    }
+
+    .logout-btn:focus {
+      outline: none;
+    }
   </style>
 </head>
 <body>
 
-<h1>Welcome to your Dashboard</h1>
+<h1>
+  Welcome to your Dashboard
+  <button class="logout-btn" onclick="window.location.href='/auth/logout'">Logout</button>
+</h1>
 
 <h2>Your Thesis Request</h2>
 <table>
@@ -88,6 +120,8 @@
     <th>Approved</th>
     <th>Associated Thesis Title</th>
     <th>Thesis Submission Date</th>
+    <th>Thesis Defense Date</th>
+    <th>Defense Marks</th>
   </tr>
   </thead>
   <tbody>
@@ -109,9 +143,25 @@
         </span>
       <span th:if="${associatedThesis == null}" class="no-thesis">No thesis associated</span>
     </td>
+
+    <!-- Thesis Defense -->
+    <td>
+        <span th:if="${associatedDefense != null}" class="thesis-date">
+          <span th:text="${associatedDefense.date}"></span>
+        </span>
+      <span th:if="${associatedDefense == null}" class="no-thesis">No defense scheduled</span>
+    </td>
+
+    <td>
+      <span th:if="${associatedDefense != null}" class="thesis-marks">
+        <span th:text="${marksAsString}"></span>
+      </span>
+      <span th:if="${associatedDefense == null}" class="no-thesis">No defense scheduled</span>
+    </td>
   </tr>
   </tbody>
 </table>
+
 
 </body>
 </html>
